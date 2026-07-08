@@ -9,7 +9,7 @@ class ContactBook:
         self.load_from_file() #to populate 
 
     def add_contact(self, name, phone, email): #adds new contact
-        contact = Contact(name, phone, email) #
+        contact = Contact(name, phone, email) #instance method
         self.contacts.append(contact)
         self.save_to_file()
         print(f"Contact '{name}' added successfully")
@@ -29,11 +29,18 @@ class ContactBook:
             for contact in results:
                 print(contact)
         else:
-            print(f"No contacts to be found for '{name}")
+            print(f"No contacts to be found for '{name}'.")
 
-    def list_all(self, name):
+    def list_all(self):
+        if not self.contacts:
+            print("No contacts saved yet.")
+        else:
+            for i, contact in enumerate(self.contacts, 1):
+                print(f"{i}. {contact}")
+
+    def save_to_file(self):
         with open(self.filename, "w") as f:
-            json.dump([c.to_dict() for c in self.contacts]f, indent = 2)
+            json.dump([c.to_dict() for c in self.contacts], f, indent=2)
 
     def load_from_file(self):
         if os.path.exists(self.filename):
